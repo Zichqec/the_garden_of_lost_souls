@@ -9,11 +9,9 @@ dicdir, yaya_base
 
 dic, aitalk.dic
 dic, boot.dic
-dic, commu.dic
 dic, menu_sakura.dic
 dic, meta.dic
 dic, other.dic
-dic, word.dic
 
 msglang,english
 

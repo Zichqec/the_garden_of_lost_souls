@@ -407,32 +407,6 @@ animation5.pattern0,overlay,6004,0,0,0
 }
 
 
-//Surfaces added for enhanced compatibility with Spectre plugin
-//Relieved
-surface98
-{
-	element0,overlay,Body0.png,0,0
-	element1,overlay,surface5002.png,0,0
-	element2,overlay,surface7001.png,0,0
-
-	animation5.interval,runonce
-	animation5.pattern0,overlay,6000,0,0,0
-}
-
-//Sweat smile
-surface99
-{
-	element0,overlay,Body0.png,0,0
-	element1,overlay,surface5003.png,0,0
-	element2,overlay,surface7001.png,0,0
-
-	animation5.interval,runonce
-	animation5.pattern0,overlay,6001,0,0,0
-}
-
-
-
-
 
 
 //通常ボディ用の口パク
