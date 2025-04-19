@@ -100,7 +100,7 @@ On_sakura.recommendsites
 recommendsites_sakura : array
 {
 	"Zi's Ukagaka Space";	"https://link.example.com/link/to/whatever/here/"
-	"""冷たくて、静かな"" Freeshell";	"TODO LINK"
+	"""冷たくて、静かな"" Freeshell";	"https://littlerainy.net/b3/shell/001rim.html"
 }
 
 On_sakura.portalsites 

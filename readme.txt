@@ -7,6 +7,6 @@ Please note, after the story section covered by the estimated completion time, t
 Materials used
 
 Freeshell "冷たくて、静かな" by じる
-<TODO LINK>
+https://littlerainy.net/b3/shell/001rim.html
 
 All other materials are self-made or do not require declaration.
