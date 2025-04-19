@@ -15,7 +15,7 @@ OnInstallComplete
 		--
 		"\![*]\__q[OnInstallComplete.Action,call]Call %(reference0)\__q  \![*]\__q[OnInstallComplete.Action,change]Change to %(reference0)\__q\n\n"
 		--
-		"\![*]\q[Thanks,blank]"
+		"\![*]\q[Done,blank]"
 	}
 }
 

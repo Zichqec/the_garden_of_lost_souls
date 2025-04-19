@@ -10,16 +10,16 @@ OnSakuraMenu : all
 {
 	"\0\s[0]\b[0]\![set,autoscroll,disable]\_q"
 	
-	"\![*]\q[Talk to me,OnAiTalk]  "
+	"\![*]\q[Talk,OnAiTalk]  "
 	switch LastTalk == ""
 	{
-		"\![*]\q[Say that again,OnLastTalk]"
-		"\![*]\f[color,disable]Say that again\f[color,default]"
+		"\![*]\q[Repeat,OnLastTalk]"
+		"\![*]\f[color,disable]Repeat\f[color,default]"
 	}
 	
 	"\n\n"
 	
-	"\![*]\q[Change talk rate,OnTalkRateMenu]\n\n"
+	"\![*]\q[Change talkrate,OnTalkRateMenu]\n\n"
 	
 	"\![*]\q[Cancel,blank]"
 	
