@@ -49,28 +49,25 @@ OnLastTalk
 }
 
 OnTalkRateMenu : all
-{	
-	_talkrate = "Off"
-	if aitalkinterval == 30; _talkrate = "30 seconds"
-	elseif aitalkinterval == 60; _talkrate = "1 minute"
-	elseif aitalkinterval == 180; _talkrate = "3 minutes"
-	elseif aitalkinterval == 300; _talkrate = "5 minutes"
-	elseif aitalkinterval == 600; _talkrate = "10 minutes"
-	
-	"\0\s[0]\b[2]\![set,autoscroll,disable]\_q"
-	"Current interval: %(_talkrate)\n\n"
-	
-	"\![*]\q[Off,OnTalkRateChange,0]\n"
-	"\![*]\q[30 seconds,OnTalkRateChange,30]\n"
-	"\![*]\q[1 minute,OnTalkRateChange,60]\n"
-	"\![*]\q[3 minutes,OnTalkRateChange,180]\n"
-	"\![*]\q[5 minutes,OnTalkRateChange,300]\n"
-	"\![*]\q[10 minutes,OnTalkRateChange,600]\n"
-	"\n"
+{
+	"\0\![set,autoscroll,disable]\![no-autopause]\_q"
+	"Talkrate:\n"
+	_times = ("Off,0","1m,60","3m,180","5m,300","10m,600","15m,900")
+	foreach _times; _time
+	{
+		switch TOINT(_time[1]) == aitalkinterval
+		{
+			"\__q[OnTalkRateChange,%(_time[1])]%(_time[0])\__q"
+			"\f[underline,1]\_a[OnTalkRateChange,%(_time[1])]%(_time[0])\_a\f[underline,default]"
+		}
+		"  "
+	}
+	"\n\n"
 	"\![*]\q[Back,OnSakuraMenu]  \![*]\q[Cancel,blank]"
 }
 
 OnTalkRateChange
 {
 	aitalkinterval = TOINT(reference0)
+	OnTalkRateMenu
 }
