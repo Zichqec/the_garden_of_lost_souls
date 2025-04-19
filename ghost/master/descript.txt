@@ -12,6 +12,4 @@ craftmanurl,https://ukagaka.zichqec.com/
 sakura.name,Hyacinth
 kero.name,-
 
-icon,icon.ico
-
 sstp.allowunspecifiedsend,0
