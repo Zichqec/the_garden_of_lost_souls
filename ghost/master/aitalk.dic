@@ -89,14 +89,14 @@ GardenTalk
 	"\0\s[0]It may be hard to believe at first, but it \f[italic,1]is\f[italic,default] true. You perished a great many ages ago, and have been wandering this world ever since.\n\n \s[4]And with a little coaxing, you've come to wander my garden from time to time as well."
 	"\0\s[9]As for the garden... it's my own creation, imbued with my magic. \s[4]There are a great many spirits which still wander after death, having left some task in life unfinished. I have created a focal point for them here."
 	"\0\s[1]I call it ""The Garden of Lost Souls""... \s[101]My greatest achievement.\n\n \s[4]You remember now, don't you? You've been here many times before, after all."
-	"\0\s[6]I suppose I told somewhat of a lie, earlier. \s[1]I'm the one being in the garden that still lives. \s[4]But that means I am also the only one who can guide you along these paths without becoming lost in the mist. Do stay close..."
-	"\![raise,OnRememberGarden]\0\s[108]Oh, not that way. \s[1]I know, that path looks inviting, doesn't it? \s[0]It's a decoy, meant to keep more violent spirits from reaching the innermost areas of the garden...\n\n \s[4]If you'd like to see what happens when the trap is sprung, I'll show you later.\e:chain=end"
+	"\0\s[6]I suppose I told somewhat of a lie, earlier. \s[1]I'm the one being in the garden that still lives. \s[4]But that means I am also the only one who can guide you along these paths without becoming lost in the mist. Do stay close...\e:chain=GardenEnd"
 }}CHAIN
 
-OnRememberGarden
-{
+GardenEnd
+{{CHAIN
 	NeedsRemindedOfGarden = 0
-}
+	"\0\s[108]Oh, not that way. \s[1]I know, that path looks inviting, doesn't it? \s[0]It's a decoy, meant to keep more violent spirits from reaching the innermost areas of the garden...\n\n \s[4]If you'd like to see what happens when the trap is sprung, I'll show you later.\e:chain=end"
+}}CHAIN
 
 HerNameStart
 {
