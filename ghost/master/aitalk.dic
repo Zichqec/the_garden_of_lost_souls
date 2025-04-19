@@ -90,8 +90,13 @@ GardenTalk
 	"\0\s[9]As for the garden... it's my own creation, imbued with my magic. \s[4]There are a great many spirits which still wander after death, having left some task in life unfinished. I have created a focal point for them here."
 	"\0\s[1]I call it ""The Garden of Lost Souls""... \s[101]My greatest achievement.\n\n \s[4]You remember now, don't you? You've been here many times before, after all."
 	"\0\s[6]I suppose I told somewhat of a lie, earlier. \s[1]I'm the one being in the garden that still lives. \s[4]But that means I am also the only one who can guide you along these paths without becoming lost in the mist. Do stay close..."
-	"\0\s[108]Oh, not that way. \s[1]I know, that path looks inviting, doesn't it? \s[0]It's a decoy, meant to keep more violent spirits from reaching the innermost areas of the garden...\n\n \s[4]If you'd like to see what happens when the trap is sprung, I'll show you later.\e:chain=end"
+	"\![raise,OnRememberGarden]\0\s[108]Oh, not that way. \s[1]I know, that path looks inviting, doesn't it? \s[0]It's a decoy, meant to keep more violent spirits from reaching the innermost areas of the garden...\n\n \s[4]If you'd like to see what happens when the trap is sprung, I'll show you later.\e:chain=end"
 }}CHAIN
+
+OnRememberGarden
+{
+	NeedsRemindedOfGarden = 0
+}
 
 HerNameStart
 {
@@ -143,6 +148,7 @@ HerNameEndText
 
 HerNameEnd
 {{CHAIN
+	NeedsRemindedOfHerName = 0
 	"\0\s[1]There are actually a variety of colors of hyacinth growing in the garden. However, I reserve the innermost area for these lavender ones exclusively. \s[4]But, perhaps we shouldn't spend all our time here... there is much more to see if we keep walking.\e:chain=end"
 }}CHAIN
 
@@ -220,6 +226,7 @@ YourNameEnd
 
 RemindingFinished
 {
+	NeedsRemindedOfUserName = 0 //Don't want the menu indicator to switch until here
 	FullyOriented = 1
 	
 	"\0\s[0]Well, now that you are alert and oriented, we can proceed as normal... \s[4]I'm eager to hear what you've done in the time you were away."

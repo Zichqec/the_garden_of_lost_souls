@@ -8,7 +8,7 @@ OnMouseDoubleClick
 
 OnSakuraMenu : all
 {
-	"\0\s[0]\b[0]\![set,autoscroll,disable]"
+	"\0\s[0]\b[0]\![set,autoscroll,disable]\_q"
 	
 	"\![*]\q[Talk to me,OnAiTalk]  "
 	switch LastTalk == ""
@@ -21,7 +21,26 @@ OnSakuraMenu : all
 	
 	"\![*]\q[Change talk rate,OnTalkRateMenu]\n\n"
 	
-	"\![*]\q[Cancel,blank]"	
+	"\![*]\q[Cancel,blank]"
+	
+	"\n\n"
+	
+	if NeedsRemindedOfGarden
+	{
+		"(Need to remember this place...)"
+	}
+	elseif NeedsRemindedOfHerName
+	{
+		"(Need to remember her name...)"
+	}
+	elseif NeedsRemindedOfUserName
+	{
+		"(Need to remember your name...)"
+	}
+	else //FullyOriented
+	{
+		"(Memories complete.)"
+	}
 }
 
 OnLastTalk
