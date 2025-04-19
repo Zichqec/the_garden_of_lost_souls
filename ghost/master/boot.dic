@@ -1,0 +1,650 @@
+OnInitialize
+{
+	
+	if reference0 != "reload" //For things you want to reset EXCEPT when just reloading; a convenience for you the dev, basically
+	{
+		BootVars
+		
+		AddedPebble = 0
+		
+		LastTalk = ""
+	}
+}
+
+OnFirstBoot
+{
+	stroke = 0
+	LastTalk = ""
+	
+	GardenGuesses = IARRAY
+	HyacinthGuesses = IARRAY
+	UserGuesses = IARRAY
+	
+	BootVars
+	
+	IsFirstBoot = 1
+	ClosedEarly = 0
+	AddedPebble = 0
+	
+	"\*\t\1\s[-1]\0\s[9].\w8.\w8.\w8?\n\n \s[0]Ah...? \s[4]Oh, my. It's been quite some time since you've made an appearance here. Have you been well...?\x\s[3].\w8.\w8. You seem confused. \s[109]That's alright, it's only to be expected that your memories would have eroded with such a long absence. \s[0]Let's start with the basics, shall we?\xDo you know where you are?\![open,inputbox,OnFirstConvo.Garden,-1]\q[,notimeout]"
+}
+
+//Essential ones for the boot sequence to function
+BootVars
+{
+	/*
+	4 - intro
+	3 - garden
+	2 - her name
+	1 - your name
+	0 - general pool
+	*/
+	
+	TalkTopic = 4
+	
+	TodayHyacinthGuess = ""
+	TodayUserGuess = ""
+	
+	FullyOriented = 0
+	NeedsRemindedOfGarden = 1
+	NeedsRemindedOfHerName = 1
+	NeedsRemindedOfUserName = 1
+	
+	AnsweredCorrect = 0
+	AnsweredPartial = 0
+	AnsweredGuess = 0
+	AnsweredBlank = 0
+	AnsweredYes = 0
+	AnsweredNo = 0
+}
+
+OnBoot
+{
+	BootVars
+	IsFirstBoot = 0 //OnInitialize might set this at an improper time
+	
+	_temp = SHIORI3FW.UserBirthday
+	_user_birthday = "%(_temp[1])/%(_temp[2])"
+	_today = "%(month)/%(day)"
+	
+	"\1\s[-1]\0\s[0]\*\t"
+	--
+	if ClosedEarly
+	{
+		"\0\s[0]Ah... \s[1]There you are, I've managed to draw you back. \s[3]You faded so quickly last time, it was rather unfortunate.\x\s[0]Let's start with the basics again, you may have lost more while you were away. Can you remember what this place is called?"
+		"\0\s[0]Ah... \s[1]You've finally returned. \s[8]You gave me a bit of a fright, disappearing so suddenly like that.\x\s[0]But no matter. Let us start again with the basics. Can you remember what this place is?"
+		"\0\s[0]Ah... you've made it back. \s[5]I was concerned with how early you faded last time... \s[4]It's good you seem to still be in one piece.\x\s[0]Let's test that your memory is still intact, shall we? Can you remember what this place is?"
+	}
+	elseif _today == _user_birthday
+	{
+		"\0\s[0]Hm...? \s[4]Oh, my. Now this is unexpected. You've graced me with your presence, on this, the anniversary of the day you were first given life... \n\n\s[1]Do not trouble yourself if you've forgotten this detail. \s[104]I will remember it for you.\x\s[0]Before we get too much further, however, I must check that your memories are intact. Do you know where you currently are at?"
+	}
+	else
+	{
+		"\0\s[0]Ah, you've returned. \s[4]So good to see you back. Shall we get started...?\x\s[0]Let's begin with the basics. Do you know where you currently are?"
+		"\0\s[0]Hm...? \s[4]Ah, I thought you might make an appearance today.\x\s[9]Let's not rush things, you know the rules. \s[0]We have to establish what you can remember first.\xDo you know where you are?"
+		"\0\s[0]Hm...? \s[4]Ah, now this is a pleasant surprise... I hadn't expected to see you back for quite some time.\x\s[9]But first things first before we can talk. We need to establish a baseline.\x\s[0]Do you know where you're currently at?"
+		"\0\s[0]Oh...? \s[6]Well, what a surprise. \s[4]I hadn't expected to see you again for a while.\x\s[0]Let's start by establishing a baseline, shall we? Can you remember the name of this place you find yourself in?"
+		"\0\s[4]There you are, right on time. \s[1]I sensed your presence nearby today.\x\s[4]Let's check your memories to see if they're intact. Can you remember what this place is?"
+		"\0\s[0]Hm...? \s[6]You're not the visitor I was expecting.\n\n \s[4]It's quite alright, I don't mind keeping your company today.\x\s[0]But first, let's check that your memories are intact. Do you remember what this place is?"
+	}
+	--
+	"\![open,inputbox,OnFirstConvo.Garden,-1]\q[,notimeout]"
+	
+	ClosedEarly = 0
+}
+
+OnClose
+{
+	ClosedEarly = 0 //Prevents a bug if you cancel closing and spend more time with the ghost
+	if !FullyOriented //In the process of the first convo still
+	{
+		ClosedEarly = 1
+		"\0\s[108]Ah, fading so soon...? \s[7]Unfortunate... we'll have to finish catching up another time."
+		"\0\s[8]Oh no, are you fading again already? \s[7]I'll have to work on strengthening your tether here..."
+		"\0\s[108]Ah, is our time up so soon? \s[7]We hadn't finished recovering your memories... \s[9]I'll have to see if I can guide your soul back here before you degrade further."
+	}
+	elseif ghostupmin < 10 //Memories recovered but exited quickly
+	{
+		"\0\s[108]Ah, fading already...? \s[7]I wish we'd had a little more time...\n\n \s[1]... Well. I am glad we saw each other, %(username), even if it was only briefly. \s[4]Take care..."
+		"\0\s[8]Fading so soon? \s[109]We've hardly explored even a few steps of the garden...\n\n \s[9]Well, there's not much to be done about it now. \s[4]Come back again sometime..."
+		"\0\s[6]Ah... \s[3]Well, that was certainly a brief visit, you're already beginning to fade.\n\n \s[1]I suppose that's the way it is sometimes... \s[4]Come back to my garden again soon, %(username)."
+	}
+	else
+	{
+		"\0\s[0]Ah... \s[3]It seems this is farewell, for now. \s[9]You're beginning to fade... \w8\w8\s[4]Come back and see me again sometime, %(username). You're always welcome in my garden."
+		"\0\s[8]Ah... \s[7]Your outline has gone fuzzy. \s[109]It seems you're beginning to fade... \w8\w8\s[1]Well, hopefully it will not be for long. Come back to my garden again soon, %(username)."
+		"\0\s[7]Hm... I'm starting to see the trees through you. \s[9]Seems it's time for you to go... \w8\w8\s[4]Well, I hope you'll find your way back here again soon, %(username)... I find your company to be quite interesting."
+		"\0\s[3]Ah... it seems our time has come to an end, for now. \s[4]Do come back and see me again soon..."
+	}
+	--
+	"\w8\w8\-"
+}
+
+OnFirstConvo.Garden
+{
+	_answer = TOLOWER(CUTSPACE(reference0))
+	
+	"\*\t"
+	--
+	if "garden of lost souls" _in_ _answer
+	{
+		NeedsRemindedOfGarden = 0
+		
+		if IsFirstBoot
+		{
+			"\0\s[6]Oh! \s[4]You remember after all, I'm impressed.\x\s[0]Perhaps you remember my name as well...?"
+		}
+		else
+		{
+			"\0\s[1]Good, very good. \s[4]Perhaps you remember my name as well...?"
+		}
+		--
+		"\![open,inputbox,OnFirstConvo.HerName,-1]\q[,notimeout]"
+		
+		AnsweredCorrect++
+	}
+	elseif "garden" _in_ _answer || "souls" _in_ _answer
+	{
+		if IsFirstBoot
+		{
+			"\0\s[6]So you remember something... \s[3]But not quite, it seems.\x\s[0]Perhaps you might remember my name...?"
+		}
+		else
+		{
+			"\0\s[0]I see... so you remember something, but not fully. \s[9]That's alright, we can work with that...\x\s[0]What of my name, can you remember that?"
+		}
+		--
+		"\![open,inputbox,OnFirstConvo.HerName,-1]\q[,notimeout]"
+		
+		AnsweredPartial++
+	}
+	elseif "heaven" _in_ _answer || "hell" _in_ _answer || "purgatory" _in_ _answer
+	{
+		"\0\s[4]Hm... a fair guess, but not quite. "
+		--
+		FirstConvo.Garden.DontKnow
+		
+		AnsweredGuess++
+	}
+	elseif "void" _in_ _answer || "afterlife" _in_ _answer || "ghost" _in_ _answer || "spirit" _in_ _answer || "specter" _in_ _answer || "spectre" _in_ _answer || "poltergeist" _in_ _answer || "inbetween" _in_ _answer || "dead" _in_ _answer
+	{
+		"\0\s[3]Hm\w8.\w8.\w8. You're not right, \s[0]but you're not wrong, either. "
+		--
+		FirstConvo.Garden.DontKnow
+		
+		AnsweredGuess++
+	}
+	elseif "yes" _in_ _answer || "はい" _in_ _answer
+	{
+		if reference2 == "second"
+		{
+			"\0\s[9].\w8.\w8. You have no idea. \s[5]Well, no matter. I will explain everything you need to know.\x"
+			--
+			FirstConvo.HerNameStart
+		}
+		else
+		{
+			"\0\s[5]And that place would be...?\![open,inputbox,OnFirstConvo.Garden,-1,--reference=second]\q[,notimeout]"
+		}
+		
+		AnsweredYes++
+	}
+	elseif "no" _in_ _answer || "いいえ" _in_ _answer
+	{
+		if IsFirstBoot
+		{
+			"\0\s[0]Hm, as I suspected. "
+		}
+		else
+		{
+			"\0\s[3]Ah, unfortunate. \s[9]Though, not entirely unexpected. "
+		}
+		--
+		FirstConvo.Garden.DontKnow
+		
+		AnsweredNo++
+	}
+	elseif _answer == ""
+	{
+		if IsFirstBoot
+		{
+			"\0\s[3]Not even a guess...? \s[0]Well, no matter. It can be difficult when your memories are so far away. "
+		}
+		else
+		{
+			"\0\s[3]Not even a guess...? \s[0]Well, no matter. It can be difficult when your memories have slipped away. "
+		}
+		--
+		FirstConvo.Garden.DontKnow
+		
+		AnsweredBlank++
+	}
+	else
+	{
+		if ASEARCH(_answer,GardenGuesses) != -1
+		{
+			"\0\s[9]No, that is not correct. \s[5]I hope this isn't a false memory that has gotten lodged deeply within your soul..."
+			--
+			"\x\s[9]Well, let's not dwell on that for now. I'll explain it to you in due time.\x"
+			--
+			FirstConvo.HerNameStart
+		}
+		else
+		{
+			GardenGuesses ,= _answer //I don't think we need to save the original version, this is easier to process...
+			
+			"\0\s[0].\w8.\w8. Unfortunately, that is incorrect. "
+			--
+			FirstConvo.Garden.DontKnow
+		}
+		
+		AnsweredGuess++
+	}
+}
+
+FirstConvo.Garden.DontKnow
+{
+	if IsFirstBoot
+	{
+		"\w8\s[1]Worry not. I'll explain everything you need to know in due time.\x"
+	}
+	else
+	{
+		"\w8\s[1]Worry not. I will explain it to you again, any time that it is necessary.\x"
+	}
+	--
+	FirstConvo.HerNameStart
+}
+
+FirstConvo.HerNameStart
+{
+	"\0\s[0]How about my name, then? Can you remember that?\![open,inputbox,OnFirstConvo.HerName,-1]\q[,notimeout]"
+}
+
+OnFirstConvo.HerName
+{
+	_answer = TOLOWER(CUTSPACE(reference0)) 
+	
+	"\*\t"
+	--
+	if "hyacinth" _in_ _answer
+	{
+		NeedsRemindedOfHerName = 0
+		
+		if AnsweredCorrect == 1 ||  AnsweredPartial == 1
+		{
+			if IsFirstBoot
+			{
+				"\0\s[1]Indeed it is. You've maintained more than I gave you credit for.\x"
+			}
+			else
+			{
+				if AnsweredCorrect == 1
+				{
+					"\0\s[1]Indeed it is, I'm glad you've retained it.\x"
+				}
+				else //partial
+				{
+					"\0\s[1]That is correct, I'm glad to see that at least this much has remained with you.\x"
+				}
+			}
+			--
+			"\s[4]One more, then. Do you remember \f[italic,1]your\f[italic,default] name?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			"\0\s[108]Oh! \s[1]So you've retained something after all. Impressive.\x"
+			--
+			"\s[0]Then I have just one final question. Do you remember \f[italic,1]your\f[italic,default] name?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		
+		AnsweredCorrect++
+	}
+	elseif "hydrangea" _in_ _answer || "lavender" _in_ _answer || "flower" _in_ _answer || "girl" _in_ _answer || "gardener" _in_ _answer
+	{
+		TodayHyacinthGuess = _answer
+		if AnsweredPartial > 0 && !IsFirstBoot
+		{
+			"\0\s[3]Hm, you seem to have retained the general concepts, but not the specifics... "
+		}
+		else
+		{
+			"\0\s[104]Ha. Cute, but not quite. "
+		}
+		--
+		FirstConvo.HerName.DontKnow
+		
+		AnsweredPartial++
+	}
+	elseif "yes" _in_ _answer || "はい" _in_ _answer
+	{
+		if reference2 == "second"
+		{
+			"\0\s[9].\w8.\w8. You have no idea. "
+			--
+			FirstConvo.HerName.DontKnow
+		}
+		elseif AnsweredYes == 3
+		{
+			"\0\s[9].\w8.\w8. No. I'll not entertain this.\x"
+			--
+			"\0\s[2]Dare I ask if you remember your own name...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		elseif AnsweredYes == 2
+		{
+			"\0\s[105]Come, don't be difficult, now.\![open,inputbox,OnFirstConvo.HerName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			"\0\s[5]And that would be...?\![open,inputbox,OnFirstConvo.HerName,-1,--reference=second]\q[,notimeout]"
+		}
+		
+		AnsweredYes++
+	}
+	elseif "no" _in_ _answer || "いいえ" _in_ _answer
+	{
+		if AnsweredCorrect > 0
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Hm. Only partial memories, then.\x"
+			}
+			else
+			{
+				"\0\s[7]Ah... \s[9]Unfortunate, your memories seem to have faded after all.\x"
+			}
+			--
+			"\0\s[0]What of your own name? Can you recall that...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			if IsFirstBoot
+			{
+				"\0\s[0]That's alright, this will take time.\x"
+			}
+			else
+			{
+				"\0\s[3]Hm, you've lost a lot, haven't you?\x"
+			}
+			--
+			"\0\s[0]Can you perhaps recall your own name...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		
+		AnsweredNo++
+	}
+	elseif _answer == ""
+	{
+		if AnsweredBlank > 0
+		{
+			"\0\s[7]Still nothing...? \s[3]Hmm...\x\0\s[0]What of your own name, then...?"
+			--
+			"\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Not even a guess...? \s[0]Don't fret, I understand. It can be difficult when your memories are so far away.\x"
+			}
+			else
+			{
+				"\0\s[3]Not even a guess...? \s[0]Don't fret, I understand. It can be difficult when your memories have faded.\x"
+			}
+			--
+			"\0\s[0]What of your own name, can you recall that...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		
+		AnsweredBlank++
+	}
+	else
+	{
+		TodayHyacinthGuess = _answer
+		if ASEARCH(_answer,HyacinthGuesses) != -1
+		{
+			"\0\s[1]Ha, is this a nickname you've created for me? \s[4]It's cute, but I'd prefer if we used my real name instead.\x\s[0]I suppose I'll need to remind you of what that is... but later. We have one final order of business.\x"
+			--
+			"\0\s[0]Your own name, can you recall what it is...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			HyacinthGuesses ,= _answer
+			"\0\s[0].\w8.\w8. I'm afraid not. "
+			--
+			FirstConvo.HerName.DontKnow
+		}
+		
+		AnsweredGuess++
+	}
+}
+
+FirstConvo.HerName.DontKnow
+{
+	"\w8\s[0]Well, it's no surprise that you've lost that detail. \s[9]The question is, will it come back to you on its own, or will I have to remind you... \s[4]We'll find out together later.\x"
+	--
+	"\0\s[0]One final thing, then. Your own name, can you recall what it is...?\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+}
+
+OnFirstConvo.YourName
+{
+	_answer = TOLOWER(CUTSPACE(reference0))
+	_username = TOLOWER(CUTSPACE(username))
+	_fullname = TOLOWER(CUTSPACE(SHIORI3FW.UserNameFull))
+	
+	_nameright = 0
+	if _username _in_ _answer || _fullname _in_ _answer; _nameright = 1
+	
+	"\*\t"
+	--
+	if _nameright
+	{
+		NeedsRemindedOfUserName = 0
+		
+		if AnsweredCorrect == 2
+		{
+			IsFirstBoot = 0
+			FullyOriented = 1
+			
+			if IsFirstBoot
+			{
+				"\0\s[1]That's correct! \s[4]I'm impressed, %(username). Despite our prolonged separation, you've managed to stay remarkably intact.\x"
+			}
+			else
+			{
+				"\0\s[4]Excellent, you're all here. \s[1]It makes things much easier when your memories stay intact between visits.\x"
+				"\0\s[4]A perfect score, well done. \s[1]It is good to see you again, %(username).\x"
+				"\0\s[4]Exceptional, you've managed to keep your memories intact. \s[1]That makes things much simpler.\x"
+			}
+			--
+			"\0\s[1]Come, walk with me. We can continue our discussion as I guide you.\x"
+		}
+		elseif AnweredCorrect + AnsweredPartial == 2 //Almost all correct
+		{
+			if IsFirstBoot
+			{
+				"\0\s[4]That is correct, %(username). I'm glad to see you've retained much of yourself despite our prolonged separation.\x"
+			}
+			else
+			{
+				"\0\s[4]That is correct, %(username). \s[1]Almost a perfect score, it shouldn't take long to bring back what you've lost.\x"
+			}
+			--
+			FirstConvo.End
+		}
+		elseif AnweredCorrect + AnsweredPartial == 1
+		{
+			if IsFirstBoot
+			{
+				"\0\s[4]That is correct, %(username). I'm glad to see you've retained some of yourself despite our prolonged separation.\x"
+			}
+			else
+			{
+				"\0\s[4]That is correct, %(username). \s[1]You've retained a fair amount, it shouldn't take long to bring back what you've lost.\x"
+			}
+			--
+			FirstConvo.End
+		}
+		else
+		{
+			if IsFirstBoot
+			{
+				"\0\s[1]Ah, good, it's good you can recall it. That's a fine starting point.\x"
+			}
+			else
+			{
+				"\0\s[1]Ah, good. It's good you can recall it. \s[4]I was getting worried that I may have lost you completely.\x"
+			}
+			--
+			FirstConvo.End
+		}
+		
+		AnsweredCorrect++
+	}
+	elseif "yes" _in_ _answer || "はい" _in_ _answer
+	{
+		if reference2 == "second"
+		{
+			"\0\s[9].\w8.\w8. You have no idea.\x"
+			--
+			FirstConvo.End
+		}
+		elseif AnsweredYes == 4 //If you've answered yes every time she doesn't give you a second chance
+		{
+			"\0\s[9].\w8.\w8. Hmph.\x"
+			--
+			"\0\s[9].\w8.\w8. \s[109]Well, I can hardly leave you here, can I...? \s[5]I don't know why it is you've decided to be stubborn, but perhaps it will become clear as we walk.\x"
+			--
+			FirstConvo.End
+		}
+		elseif AnsweredYes == 3
+		{
+			"\0\s[9].\w8.\w8. No, I'll not entertain this.\x"
+			--
+			"\s[5]Well, whether you recall it or not, I can hardly leave you here, can I...?\x"
+			--
+			FirstConvo.End
+		}
+		elseif AnsweredYes == 2
+		{
+			"\0\s[105]Come, don't be difficult, now.\![open,inputbox,OnFirstConvo.YourName,-1]\q[,notimeout]"
+		}
+		else
+		{
+			"\0\s[5]And that would be...?\![open,inputbox,OnFirstConvo.YourName,-1,--reference=second]\q[,notimeout]"
+		}
+		
+		AnsweredYes++
+	}
+	elseif "no" _in_ _answer || "いいえ" _in_ _answer
+	{
+		if AnsweredCorrect == 2
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Hm. Only partial memories, then. That's unfortunate, but not entirely unexpected. \s[1]Worry not, we'll work on restoring that memory together\x"
+			}
+			else
+			{
+				"\0\s[7]Ah... \s[109]Only partial memories, then. How unfortunate... \s[3]At least you've kept a fair amount of your memory intact, it's a good starting point.\x"
+			}
+			--
+			FirstConvo.End
+		}
+		elseif AnsweredCorrect > 0 || AnsweredPartial > 0
+		{
+			if IsFirstBoot
+			{
+				"\0\s[0]I see... That's unfortunate, but not unexpected after such a prolonged absence.\x"
+			}
+			else
+			{
+				"\0\s[7]I see... \s[9]How unfortunate. \s[3]This will take quite some effort.\x"
+			}
+			--
+			FirstConvo.End
+		}
+		else //Completely wrong
+		{
+			if IsFirstBoot
+			{
+				"\0\s[5]I suspected as much. \s[0]You've had a prolonged absence, so it's no surprise. \s[3]It will take a great amount of effort to restore your memories.\x"
+			}
+			else
+			{
+				"\0\s[3]So you've retained nothing at all. \s[109]How unfortunate... It will take a great amount of effort to restore your memories. "
+			}
+			--
+			FirstConvo.End
+		}
+		
+		AnsweredNo++
+	}
+	elseif _answer == ""
+	{
+		if AnsweredBlank == 2
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Not feeling very talkative, are you...? \s[0]Very well, that's fine. \s[5]It must be overwhelming for you to find yourself in this realm again after so long.\x"
+			}
+			else
+			{
+				"\0\s[3]Not feeling very talkative, are you...? \s[3]Perhaps something terrible happened to you out there. \s[109]Hmm... \w8\w8\s[0]Very well, if you want me to do the talking, that's fine. Don't let it trouble you.\x"
+			}
+			--
+			FirstConvo.End
+			
+		}
+		elseif AnsweredBlank > 0
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Hm, not sure of this one either...? \s[0]Well, that's fine. You'll regain your confidence with time. \s[5]It will be difficult after such a prolonged absence.\x"
+			}
+			else
+			{
+				"\0\s[3]Hm, not sure of this one either...? \s[9]It's unfortunate to see how little has remained...\x"
+			}
+			--
+			FirstConvo.End
+		}
+		else
+		{
+			if IsFirstBoot
+			{
+				"\0\s[3]Not even a guess...? \s[0]Well, no matter. It can be difficult when your memories are so far away.\x"
+			}
+			else
+			{
+				"\0\s[3]Not even a guess...? \s[0]Well, no matter. It can be difficult when your memories have faded.\x"
+			}
+			--
+			FirstConvo.End
+		}
+	}
+	else
+	{
+		TodayUserGuess = _answer
+		if ASEARCH(_answer,UserGuesses) != -1
+		{
+			"\0\s[1]You've told me this one before. Is it a new name you've created for yourself? \s[4]I'll remember it, but the name I'd like you to recall is the one you used while you were living. \s[1]It will come back to you.\x"
+		}
+		else
+		{
+			UserGuesses ,= _answer
+		
+			"\0\s[0].\w8.\w8. Sadly, that is incorrect. \s[1]Still, it was a good effort. We'll work on restoring that memory together.\x"
+		}
+		--
+		FirstConvo.End
+		
+		AnsweredGuess++
+	}
+}
+
+FirstConvo.End
+{
+	IsFirstBoot = 0
+	
+	"\0\s[0]Come, allow me to guide you along the path. We have much to discuss.\x"
+}

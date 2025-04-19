@@ -1,0 +1,5 @@
+charset,Shift_JIS
+name,ó‚ÇΩÇ≠ÇƒÅAê√Ç©Ç»
+type,shell
+directory,JtoFree000rim
+

@@ -1,0 +1,17 @@
+charset,UTF-8
+
+name,The Garden of Lost Souls
+type,ghost
+
+shiori,yaya.dll
+
+craftman,Zichqec
+craftmanw,Zichqec
+craftmanurl,https://ukagaka.zichqec.com/
+
+sakura.name,Hyacinth
+kero.name,-
+
+icon,icon.ico
+
+sstp.allowunspecifiedsend,0

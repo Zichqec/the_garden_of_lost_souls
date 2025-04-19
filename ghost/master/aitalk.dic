@@ -1,0 +1,330 @@
+OnAiTalk
+{
+	if CHAIN.IDName != ""
+	{
+		LastTalk = ChainTalk
+	}
+	else
+	{
+		if TalkTopic == 4
+		{
+			LastTalk = IntroTalk
+		}
+		elseif TalkTopic == 3
+		{
+			LastTalk = GardenStart
+		}
+		elseif TalkTopic == 2
+		{
+			LastTalk = HerNameStart
+		}
+		elseif TalkTopic == 1
+		{
+			LastTalk = UsernameStart
+		}
+		elseif !FullyOriented
+		{
+			FullyOriented = 1
+			LastTalk = RemindingFinished
+		}
+		else
+		{
+			LastTalk = RandomTalk
+		}
+		if TalkTopic != 0; NextTalkTopic
+	}
+	LastTalk
+}
+
+NextTalkTopic
+{
+	/*
+	4 - intro
+	3 - garden
+	2 - her name
+	1 - your name
+	0 - general pool
+	*/
+	
+	TalkTopic--
+	
+	if TalkTopic == 3 && NeedsRemindedOfGarden == 0; TalkTopic--
+	if TalkTopic == 2 && NeedsRemindedOfHerName == 0; TalkTopic--
+	if TalkTopic == 1 && NeedsRemindedOfUserName == 0; TalkTopic--
+	
+	if TalkTopic < 0; TalkTopic = 0
+}
+
+IntroTalk : nonoverlap_pool
+{
+	if NeedsRemindedOfGarden && NeedsRemindedOfHerName && NeedsRemindedOfUserName
+	{
+		"\0\s[8]Ah, watch out for that branch...! \w8\s[7].\w8.\w8. You really don't remember a thing, do you...? \s[3]I suppose an explanation of our surrounds is in order, then. \s[9]And quickly... Let's see."
+		"\0\s[108]Oh, don't step in the--\n\n \w8\w8\w8\w8\w8\s[8].\w8.\w8. \w8\w8\w8\s[7]It's... fine. Don't worry about it, just come this way, that's right...\n\n \s[109]I suppose I had better explain our surrounds quickly, before you get yourself into further trouble... Let's see."
+	}
+	elseif !(NeedsRemindedOfGarden || NeedsRemindedOfHerName || NeedsRemindedOfUserName)
+	{
+		"\0\s[101]You remember the path, do you? \s[104]Careful, it has a tendency to bite those who are overconfident. Let me lead the way."
+		"\0\s[1]You seem at home here, %(username). \s[4]It's good to see you relaxed, but let me take the lead, alright?"
+	}
+	else
+	{
+		if NeedsRemindedOfGarden == 0
+		{
+			"\0\s[0]At least you've retained your knowledge of this place. \s[5]It makes things much easier when you remember to stick to the path and follow my instructions."
+		}
+		"\0\s[0]Careful, don't get lost in the mist. \s[5]We've only just started, I don't need to lose you again so soon.\n\n \s[9]Now then, where should I begin this time..."
+		"\0\s[5]Watch out for the vines hanging just there, they'll ensnare you if you aren't paying attention.\n\n \s[9]Hm, let's see, where to start this time..."
+	}
+}
+
+GardenStart
+{
+	"\0\s[0]Well, I'm sure you've noticed by now that this is no ordinary garden. \s[9]Pale tree trunks, glowing moss, ethereal mist so cold it sinks into your skin like a knife... \s[104]A complete lack of sounds one would expect from a place full of life.\n\n \s[1]It only makes sense. After all, everything here is quite dead.\e:chain=GardenTalk"
+}
+
+GardenTalk
+{{CHAIN
+	"\0\s[4]You always have this look of disbelief when I inform you of your demise... But you must have noticed, right? \s[5]I would think the lack of a pulse and the persistent cold would make it obvious.\n\n \s[9]I suppose that's not really my business, though."
+	"\0\s[0]It may be hard to believe at first, but it \f[italic,1]is\f[italic,default] true. You perished a great many ages ago, and have been wandering this world ever since.\n\n \s[4]And with a little coaxing, you've come to wander my garden from time to time as well."
+	"\0\s[9]As for the garden... it's my own creation, imbued with my magic. \s[4]There are a great many spirits which still wander after death, having left some task in life unfinished. I have created a focal point for them here."
+	"\0\s[1]I call it ""The Garden of Lost Souls""... \s[101]My greatest achievement.\n\n \s[4]You remember now, don't you? You've been here many times before, after all."
+	"\0\s[6]I suppose I told somewhat of a lie, earlier. \s[1]I'm the one being in the garden that still lives. \s[4]But that means I am also the only one who can guide you along these paths without becoming lost in the mist. Do stay close..."
+	"\0\s[108]Oh, not that way. \s[1]I know, that path looks inviting, doesn't it? \s[0]It's a decoy, meant to keep more violent spirits from reaching the innermost areas of the garden...\n\n \s[4]If you'd like to see what happens when the trap is sprung, I'll show you later.\e:chain=end"
+}}CHAIN
+
+HerNameStart
+{
+	"\0\s[9]Hm... \s[9]When it comes to my name, I don't like to tell it to you directly. \s[0]You retain your memories better over time if I let you work it out and remember for yourself.\n\n Walk with me and take in the scenery. \s[4]Perhaps it will come back to you.\e:chain=HerNameTalk"
+}
+
+HerNameTalk
+{{CHAIN
+	"\0\s[0]I've taken great care to coordinate the colors of the flora I bring into this space. \s[4]It has a pleasing effect, doesn't it? \s[104]The soft glow of the moss brings out the beauty in the pale pastels of the flower petals..."
+	"\0\s[0]It's atypical to see this particular variety of flowers growing together in a wetland such as this. \s[6]But as you're aware, nothing in the garden is ""alive"", so to speak... \s[4]This includes the flowers as well. It is quite the involved process to bring them here and keep them in a life-like state."
+	"\*\t\0\s[1]These flowers in the very center of the garden are my favorite... \s[1]The lavender color suits me, don't you think?\n\n \s[4]As a matter of fact, I'm named after them. Have you remembered?\![open,inputbox,OnGuessHerName,-1]\q[,notimeout]"
+}}CHAIN
+
+OnGuessHerName
+{
+	_answer = TOLOWER(CUTSPACE(reference0))
+	if "hyacinth" _in_ _answer
+	{
+		"\0\s[1]Indeed, that's correct. I am Hyacinth. \s[4]Perhaps next time it will come easier to you.\e:chain=HerNameEnd"
+	}
+	elseif _answer == ""
+	{
+		"\0\s[3]... I'll take your silence as a no. \s[9]Unfortunate...\n\n "
+		--
+		HerNameEndText
+	}
+	elseif ("yes" _in_ _answer || "はい" _in_ _answer) && reference2 != "second"
+	{
+		"\*\t\0\s[5]... And my name is...?\![open,inputbox,OnGuessHerName,-1,--reference=second]\q[,notimeout]"
+	}
+	elseif TodayHyacinthGuess == _answer //Same answer as given during boot
+	{
+		"\0\s[105]I have already told you this name is incorrect, haven't I...? \s[109]Perhaps your memories are not yet stable...\n\n "
+		--
+		HerNameEndText
+	}
+	else
+	{
+		"\0\s[0]... Unfortunate. "
+		--
+		HerNameEndText
+	}
+}
+
+HerNameEndText
+{
+	"\s[9]My name is Hyacinth. \s[4]Don't forget it, alright?\e:chain=HerNameEnd"
+}
+
+HerNameEnd
+{{CHAIN
+	"\0\s[1]There are actually a variety of colors of hyacinth growing in the garden. However, I reserve the innermost area for these lavender ones exclusively. \s[4]But, perhaps we shouldn't spend all our time here... there is much more to see if we keep walking.\e:chain=end"
+}}CHAIN
+
+UsernameStart
+{
+	"\0\s[3]Hmmm... It can be difficult to remind you of your own name, at times. \s[9]It's a difficult memory to lose, and if you've managed to lose it then it becomes all the more difficult to bring back. \s[0]But do try.\n\n Think about your innermost self as we follow this path, and it should come back to you without my needing to prompt.\e:chain=UsernameTalk"
+}
+
+UsernameTalk
+{{CHAIN
+	"\0\s[0]You may find it helpful to consider various features of the garden around you. \s[109]The many flowers, trees, and other plants... \s[106]Do any of them feel more favorable to you?\n\n ... \s[104]You don't need to tell these things to me, just consider it within yourself. Such explorations of your inner thoughts can remind you of who you once were."
+	"\0\s[9]Unfortunately, I cannot be of much help to you with this process... \s[1]I've tried coming up with metaphors to remind you of yourself, but it's rather useless. \s[4]That being said, I am certain it will come back to you, so don't worry."
+	"\0\s[101]The quiet of the garden is a good environment for exploring your innermost self, isn't it? \s[104]Ah, but don't let me interrupt... I see that your mind is hard at work."
+	"\*\t\0\s[0]... You've remembered it, haven't you? \s[1]Tell me, then. \s[4]And remember, I am already familiar with your name, so you need not give me an alias.\![open,inputbox,OnGuessYourName,-1]\q[,notimeout]"
+}}CHAIN
+
+OnGuessYourName
+{
+	_answer = CUTSPACE(TOLOWER(reference0))
+	
+	_username = TOLOWER(CUTSPACE(username))
+	_fullname = TOLOWER(CUTSPACE(SHIORI3FW.UserNameFull))
+	_nameright = 0
+	if _username _in_ _answer || _fullname _in_ _answer; _nameright = 1
+	
+	if _nameright
+	{
+		"\0\s[101]Indeed, that is correct. \s[104]Welcome back, %(username).\e:chain=end" //Skip transitional dialogue
+	}
+	elseif _answer == ""
+	{
+		"\0\s[7]Ah... I see I was wrong, you haven't remembered it at all. "
+		--
+		GuessYourNameWrong
+	}
+	elseif "yes" _in_ _answer || "はい" _in_ _answer
+	{
+		if reference2 == "second"
+		{
+			"\0\s[5]That really is just like you, %(username). \s[109]Always the prankster...\e:chain=YourNameEnd"
+		}
+		else
+		{
+			"\*\t\0\s[5]... And your name would be...?\![open,inputbox,OnGuessYourName,-1,--reference=second]\q[,notimeout]"
+		}
+	}
+	elseif "no" _in_ _answer || "いいえ" _in_ _answer
+	{
+		GuessYourNameWrong
+	}
+	if TodayUserGuess == _answer //Guessing the same thing you put in during the boot sequence
+	{
+		"\0\s[5]... I have already told you this is not the name I am seeking from you. What benefit is there in reiterating it...? \s[4]Perhaps it will make you happy to know that I did remember it, as I said I would.\n\n \s[9]That being said... \s[1]Your name, the one you first gave to me, is %(username).\e:chain=YourNameEnd"
+	}
+	elseif ASEARCH(_answer,UserGuesses) != -1
+	{
+		"\0\s[1]Ah... I remember this one, is it a favorite nickname of yours? \s[4]Or perhaps it simply feels logical when considering your personality in the abstract...?\n\n \s[0]Well, it is close enough. \s[1]Your name, the one you first gave to me, is %(username).\e:chain=YourNameEnd"
+	}
+	else
+	{
+		UserGuesses ,= _answer
+		GuessYourNameWrong
+	}
+}
+
+GuessYourNameWrong
+{
+	"\0\s[109]Unfortunate. It's saddening to see you lose this part of yourself, %(username).\n\n \s[0]Do you remember it now? Or does it sound foreign to you? \s[3]Give it some time...\e:chain=YourNameEnd"
+}
+
+YourNameEnd
+{{CHAIN
+	"\0\s[0]""%(username)""... \s[4]It's a good sound, isn't it? Familiar, perhaps?\n\n \s[1]You seem to be growing more acclimated to it. That is good enough for me.\e:chain=end"
+}}CHAIN
+
+RemindingFinished
+{
+	FullyOriented = 1
+	
+	"\0\s[0]Well, now that you are alert and oriented, we can proceed as normal... \s[4]I'm eager to hear what you've done in the time you were away."
+	"\0\s[0]It appears that you are now fully present... \s[4]Good. It's good to have you back, %(username). For however long it lasts..."
+	"\0\s[0]It seems you are now feeling oriented. \s[4]Good. Let's proceed, then... until you fade away."
+	--
+	"\x"
+}
+
+RandomTalk : nonoverlap_pool
+{
+	"\0\s[9]The stream that flows through this part of the garden is one of my favorite features. \s[4]It isn't ""living"", per-se, but it certainly adds to the illusion of life.\e:chain=RandomTalk_Stream"
+	"\0\s[0]There is a small path just behind those trees... \s[1]Let's take it, shall we?\e:chain=RandomTalk_PathBehindTrees"
+	"\0\s[9]Hmm, where shall we go next... \s[0]Perhaps this path, \w8\s[1]it leads to your favorite patch of flowers.\e:chain=RandomTalk_PatchOfFlowers"
+	"\0\s[1]Let's head to the bridge, I've improved the area recently with new flora.\e:chain=RandomTalk_TheBridge"
+	"\0\s[0]Perhaps we should go in this direction. \s[6]There is a clearing with a few large stones... \s[1]It's quite popular.\e:chain=RandomTalk_LargeStones"
+	"\0\s[0]Hm? You seem interested in what's down that narrow path... \s[4]Let's follow it, then. I don't mind indulging your curiosity...\e:chain=RandomTalk_NarrowPath"
+	"\0\s[0]Perhaps you'd like to see the largest tree currently standing in the garden? \s[1]Come, I'll take you there.\e:chain=RandomTalk_LargestTree"
+	"\0\s[1]Let's follow the main path here for a time. I'm sure we'll find something of interest further along.\e:chain=RandomTalk_MainPath"
+	"\0\s[1]This way, there's an evergreen grove that you'll enjoy. \s[4]You've certainly claimed to in the past, anyway.\e:chain=RandomTalk_EvergreenGrove"
+	if !AddedPebble; "\0\s[0]Ah... \s[1]Perhaps we should go and add a pebble to your pile, while there is still time. \s[4]Come, follow me.\e:chain=RandomTalk_PebblePile"
+	else; "\0\s[1]Your presence here is quite strong today. \s[3]There are many times that you fade away before we've had a chance to spend much time together. \s[4]I am glad today is not one of those days."
+}
+
+RandomTalk_Stream
+{{CHAIN
+	"\0\s[0]Let's follow the stream for a while. \s[4]Don't worry, there are stepping stones further down where we can cross."
+	"\0\s[1]The sound of the water flowing over and around the rocks... it's peaceful, isn't it? \s[4]I'm told it helps to keep the silence from becoming smothering."
+	"\0\s[0]Here are the stepping stones, let's cross to the other side.\n\n \s[8]Ah, be careful! \s[105]They're quite slippery, being in the water as they are...\n\n \w8\w8\s[7]... Well, you'll dry out as we walk... \w8\s[109]At least you didn't fall all the way in, as you've done previously."
+	"\0\s[3]You've stopped dripping, at least... \s[0]Let's head away from the stream for now, I think.\e:chain=end"
+}}CHAIN
+
+RandomTalk_PathBehindTrees
+{{CHAIN
+	"\0\s[9]Here it is, just through here... \s[4]Don't mind the thorns, you're well past the point where they could do you any real harm."
+	"\0\s[6]You've told me before that this path reminds you of your home... \s[4]I try to make a point of bringing you here when you visit me."
+	"\0\s[0]I've yet to learn what it is exactly that makes you feel nostalgic in this part of the garden... \s[6]Is it the types of trees around us? The way the leaves crunch under our feet? The shape of the land itself?\n\n \s[4]It's all rather fascinating, but you never give me a straight answer..."
+	"\0\s[1]... Well, here is where the side path ends.\n\n \s[4]Someday, I'll convince you to share your secrets with me. It is only a matter of time...\e:chain=end"
+}}CHAIN
+
+RandomTalk_PatchOfFlowers
+{{CHAIN
+	"\0\s[0]Here we are. \s[101]Aren't they lovely?\n\n I've grouped them according to color in this clearing."
+	"\0\s[0]Hmm... you have a look about you that tells me you want to pick some of the flowers.\n\n \s[1]I suppose I can allow it... \s[4]After all, they're not really alive, so it can hardly be worse than what you do while you wander the world, sowing dismay."
+	"\0\s[5]Well, whatever is that expression for? \s[6]Surely you sense it within yourself, even if you cannot recall your specific misdeeds at the moment...?\n\n \s[4]Or perhaps you simply disagree with my assessment. Interesting..."
+	"\0\s[1]Ah, but it isn't my intention to put you on the defensive. \s[4]Let's move on from here, shall we? There are other things to explore...\e:chain=end"
+}}CHAIN
+
+RandomTalk_TheBridge
+{{CHAIN
+	"\0\s[0]Here we are... \s[101]I think the new ferns add a lot, don't they?\n\n \s[1]I spent a lot of time positioning them just so."
+	"\0\s[108]Oh, be careful! \s[8]Those leaves are poison oak.\n\n \s[6]Although, in your current state I am not sure they would actually affect you... \s[4]It might be interesting to find out."
+	"\0\s[9]Hm... You don't seem all that enthusiastic about the idea.\n\n \s[4]Perhaps another time, then. I can be patient..."
+	"\0\s[0]Come, leave the plants behind. \s[4]Let's cross and move along to another area...\e:chain=end"
+}}CHAIN
+
+RandomTalk_LargeStones
+{{CHAIN
+	"\0\s[0]Just through here... \s[6]Don't get ensnared by the vines. \s[9]I don't want to have to pull you free again.\n\n \s[5]... I reserve the right to anticipate your future actions based on your pattern of previous behaviors. \s[9]We've had this conversation before, and I am certain we'll have it many times again..."
+	"\0\s[9]Regardless, here we are... \s[4]Impressive, aren't they?\n\n \s[1]I thought it would be nice to break up the landscape in some fashion. \s[4]Just be careful, they're mainly meant for observation, not climbing."
+	"\0\s[8]... \w8\w8\w8\s[7]Yes, as you've discovered a hundred times before, these rocks are quite slick... \s[9]I really wish you'd retain this detail more frequently."
+	"\0\s[3]I suppose even if you took a tumble, it wouldn't really hurt you... \s[9]Still, it doesn't help me, either, so I hardly see the point in allowing it.\n\n \s[5]Let's move somewhere else less likely to incite horseplay.\e:chain=end"
+}}CHAIN
+
+RandomTalk_NarrowPath
+{{CHAIN
+	"\0\s[7]Do be careful, the roots here are quite thick. \s[9]It makes this a treacherous path to walk..."
+	"\0\s[8]There's no need to rush, we can take our time. \s[3]Maybe a twisted ankle doesn't mean so much to you these days, but I'd like to keep mine uninjured."
+	"\0\s[0]Well, here we are at the end of the path... \s[1]Sorry, a dead end is a little disappointing, isn't it?\n\n \s[4]I'm still working on this area. I'll turn it into something wonderful... eventually.\n\n \s[1]For now, we'll have to head back out the way we came in."
+	"\0\s[1]I haven't decided yet what I'll turn this area into... Perhaps a copse of birch trees? A small grove with logs full of toadstool? Maybe a little pond with lilypads...?\n\n \s[4]If you have any ideas while you're here, feel free to share them.\e:chain=end"
+}}CHAIN
+
+RandomTalk_LargestTree
+{{CHAIN
+	"\0\s[1]It's just over here, once we round this bend...\n\n \s[104]There, you can see it in full now. Isn't it splendid? Large roots that extend out and take up half the clearing, glowing moss hanging here and there, all blanketed by the thick shade afforded by its leaves..."
+	"\0\s[8]I know the large branches look inviting, but the great oak is not for climbing.\n\n \s[7]I \f[italic,1]have\f[italic,default] told you that everything in the garden is dead, correct...?"
+	"\0\s[9]Perhaps I should consider putting up a fence... \s[109]But I much prefer the garden to look wild.\n\n \s[105]Perhaps a magical barrier would be more adviseable regardless. Some of my visitors can be quite... impulsive."
+	"\0\s[3]Well, no matter... \s[1]The tree is safe, so let us continue onward.\e:chain=end"
+}}CHAIN
+
+RandomTalk_MainPath
+{{CHAIN
+	"\0\s[0]The main path is much more groomed than some of the other areas. \s[1]I like having some places that are easy to walk, and others that are more wild.\n\n \s[6]The same could be said of my visitors. \s[0]Some spirits that visit here are well-behaved and orderly. \s[4]Others could perhaps be described as feral... \s[104]I think a mix of both is ideal."
+	"\0\s[6]Are you curious about where you fall on the scale of orderly-to-feral? \s[1]Well... there are a great many shades of gray. Most spirits fall somewhere in the middle.\n\n \s[4]There is also the matter of the garden's calming effects... \s[104]You're much more violent when you are not here. This must be taken into consideration as well."
+	"\0\s[1]... I wouldn't worry too much about it. It isn't a metric that makes a difference for you at this stage, after all.\n\n \s[4]Focus on the here and now... I'll not punish you for the many misdeeds you commit outside the garden's walls."
+	"\0\s[4]Perhaps if we explore somewhere else it will take your mind off things... \s[6]I wonder, where might you like to go right now? \s[1]Give me a little while, I'll come up with something.\e:chain=end"
+}}CHAIN
+
+RandomTalk_EvergreenGrove
+{{CHAIN
+	"\0\s[1]The aroma in this area is quite pleasant, isn't it? Something about pine is very refreshing. \s[4]It's a good way to clear one's head."
+	"\0\s[1]Yes, I placed each of the pinecones you see littering the forest floor. \s[101]I'm glad you appreciate my work, %(username).\n\n \s[4]Creating these scenic spaces, frozen in time, is a favorite hobby of mine..."
+	"\0\s[6]You seem more focused... \s[4]Perhaps the scents here are nostalgic to you.\n\n \s[1]I wonder, has it brought back any memories of your past that you'd be willing to part with...?\n\n \w8\w8\s[3]... Hm. Perhaps not. \s[5]Not yet, anyway."
+	"\0\s[1]Well, that's alright too. I don't believe our trips here are ever wasted. \s[4]You've shared very interesting stories with me before... \s[104]I believe one day you'll do so again.\e:chain=end"
+}}CHAIN
+
+RandomTalk_PebblePile
+{{CHAIN
+	"\0\s[0]Just this way... \s[1]If you see a pebble you like while we walk, feel free to pick it up. \s[4]I'm trying to clean them up from the path here anyway, so it serves two purposes..."
+	"\0\s[6]Here we are. \s[6]It's amazing, isn't it? \s[1]All of these pebble piles around the edge of the clearing... each one belongs to a particular spirit that visits me. If we have time, we add a pebble to their pile while they're here.\n\n \s[4]I have many visitors, as you can see..."
+	"\![raise,OnAddedPebble]\0\s[109]Some days, a spirit fades too quickly before we've had a chance to add a pebble. \s[1]In those cases I add one for them, so that it serves as an accurate count.\n\n \s[4]Here is your pile... is it bigger than you expected? \s[1]Go ahead, place your pebble neatly on the top."
+	"\0\s[1]How lovely... \s[101]Thank you for your participation. Shall we move on?\n\n \s[4]... You seem to still be in shock at the amount of pebbles you've collected. I did say we have met many times before, did I not? \n\n\s[1]We have known each other for a long time, and have had many meetings in this place. \s[104]I hope there will be many more...\e:chain=end"
+}}CHAIN
+
+OnAddedPebble
+{
+	AddedPebble = 1
+}
