@@ -5,9 +5,8 @@ type,ghost
 
 shiori,yaya.dll
 
-craftman,Zichqec
-craftmanw,Zichqec
-craftmanurl,https://ukagaka.zichqec.com/
+craftman,Nid-Silk Plotter
+craftmanw,Nid-Silk Plotter
 
 sakura.name,Hyacinth
 kero.name,-
