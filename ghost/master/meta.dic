@@ -6,7 +6,7 @@
 
 OnInstallComplete
 {
-	"\0\s[0]Installed %(reference1) (%(reference0))."
+	"\0\![set,serikotalk,false]Installed %(reference1) (%(reference0))."
 	--
 	//A little menu to open or change to the ghost that was installed immediately
 	if "ghost" _in_ reference0
@@ -44,7 +44,7 @@ OnInstallFailure
 		when "artificial"; _reason = "canceled by user"
 	}
 	
-	"\0\s[0]Could not complete installation: %(_reason)."
+	"\0\![set,serikotalk,false]Could not complete installation: %(_reason)."
 }
 
 
@@ -56,7 +56,7 @@ OnNarCreated
 	//Makes a clickable link that'll open the location of the file they just made
 	_nar = "\_a[OnNarLocation,""%(reference1)""]%(reference0)\_a"
 	
-	"\0\s[0]Successfully created %(_nar)."
+	"\0\![set,serikotalk,false]Successfully created %(_nar)."
 }
 
 OnNarLocation
@@ -70,7 +70,7 @@ OnNarLocation
 
 OnUpdateBegin
 {
-	"\0\s[0]Checking for updates.\w8"
+	"\0\![set,serikotalk,false]Checking for updates.\w8"
 }
 
 //reference0 is the number of new files, starting from 0
@@ -82,7 +82,7 @@ OnUpdateReady
 	_s = ""; _are = "is"
 	if reference0 != 1; {_s = "s"; _are = "are"}
 	
-	"\0\s[0]There %(_are) %(reference0) new file%(_s).\w8"
+	"\0\![set,serikotalk,false]There %(_are) %(reference0) new file%(_s).\w8"
 }
 
 //When the update finishes. Don't forget to initialize any new variables you've created! I highly highly recommend using OnInitialize for this (it's in boot.dic), in case the user updates via the ghost explorer or some other means.
@@ -91,11 +91,11 @@ OnUpdateComplete
 {
 	if reference0 == "none"
 	{
-		"\0\s[0]There are no new files."
+		"\0\![set,serikotalk,false]There are no new files."
 	}
 	else
 	{
-		"\0\s[0]Update complete."
+		"\0\![set,serikotalk,false]Update complete."
 	}
 }
 
@@ -109,7 +109,7 @@ OnUpdateFailure
 		when "md5 miss"; _reason = "MD5 error on file %(_file)\n\nPlease contact the ghost author for assistance"
 		when "artificial"; _reason = "canceled by user"
 	}
-	"\0\s[0]Could not update: %(_reason)."
+	"\0\![set,serikotalk,false]Could not update: %(_reason)."
 }
 
 
@@ -122,24 +122,24 @@ OnSNTPCompare
 	{
 		_s = ""; if reference3 != 1; _s = "s"
 		
-		"\0\s[0]The clock is off by %(reference3) second%(_s).\n\n"
+		"\0\![set,serikotalk,false]The clock is off by %(reference3) second%(_s).\n\n"
 		--
 		"\![*]\q[Fix it,script:\6]  \![*]\q[Leave it,blank]"
 	}
 	else
 	{
-		"\0\s[0]The clock is accurate."
+		"\0\![set,serikotalk,false]The clock is accurate."
 	}
 }
 
 OnSNTPCorrect
 {
-	"\0\s[0]The clock has been corrected."
+	"\0\![set,serikotalk,false]The clock has been corrected."
 }
 
 OnSNTPFailure
 {
-	"\0\s[0]Could not correct the clock."
+	"\0\![set,serikotalk,false]Could not correct the clock."
 }
 
 
@@ -157,7 +157,7 @@ OnBIFFFailure
 		when "artificial"; _reason = "canceled by user"
 	}
 
-	"\0\s[0]Could not get emails: %(_reason)."
+	"\0\![set,serikotalk,false]Could not get emails: %(_reason)."
 }
 
 
@@ -173,5 +173,5 @@ OnHeadlinesenseFailure
 		when "can't analyze"; _reason = "can't analyze the file"
 	}
 
-	"\0\s[0]Could not get RSS: %(_reason)."
+	"\0\![set,serikotalk,false]Could not get RSS: %(_reason)."
 }
