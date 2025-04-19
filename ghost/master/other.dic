@@ -32,11 +32,6 @@ OnWindowStateRestore
 	OnSurfaceRestore
 }
 
-On_homeurl
-{
-	""
-}
-
 //Written by Zichqec https://ukagaka.zichqec.com/
 /*
 This function should work in any YAYA ghost. Just copy the whole function into your ghost somewhere, and it should be applied automatically!
@@ -112,55 +107,6 @@ OnUserInputCancel
 		"\![raise,OnGuessYourName]"
 	}
 }
-
-//—————————————————————————————— Right click menu links ——————————————————————————————
-
-//Takes an array of alternating names and urls, and formats them for use with the right click menu
-FormatLinks : all
-{
-	for _i = 0; _i < ARRAYSIZE(_argv); _i++
-	{
-		_argv[_i] //Add the link/title
-		//Alternate between adding %ASC(1) or %ASC(2)
-		if _i % 2 == 1; "%ASC(2)"
-		else; "%ASC(1)"
-	}
-}
-
-On_sakura.recommendsites
-{
-	FormatLinks(recommendsites_sakura)
-}
-
-//These are the websites linked in the top option of the sakura's right click menu. The format is simple; write the label of the link on the left followed by a semicolon, and then on the right, the url to link to. These should be separate strings.
-recommendsites_sakura : array
-{
-	"Link label";	"https://link.example.com/link/to/whatever/here/"
-}
-
-On_sakura.portalsites 
-{
-	FormatLinks(portalsites_sakura)
-}
-
-//These are the websites linked in the second option of the sakura's right click menu. Same as above
-portalsites_sakura : array
-{
-	"Another link label";	"https://link.example.com/link/to/whatever/here/again/"
-	"A third link label";	"https://link.example.com/link/to/whatever/a/third/time/you/can/add/as/many/as/you/want/"
-}
-
-On_kero.recommendsites
-{
-	FormatLinks(recommendsites_kero)
-}
-
-//These are the websites linked in the first option of the kero's right click menu. Same as above
-recommendsites_kero : array
-{
-	"These labels can be anything you want";	"https://link.example.com/link/to/whatever/here/once/more/"
-}
-
 
 //—————————————————————————————— User pronoun related ——————————————————————————————
 
