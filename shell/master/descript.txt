@@ -56,7 +56,7 @@ sakura.bindgroup303.name,洋服,シンプルレディワンピース黒
 sakura.bindgroup304.name,洋服,フォレストオーバーワンピ
 sakura.bindgroup305.name,洋服,スターライトオーバーワンピ
 sakura.bindgroup306.name,洋服,フリルロングメイド
-sakura.bindgroup300.default,1
+sakura.bindgroup301.default,1
 
 sakura.bindoption.group,髪アタッチメント,mustselect
 sakura.bindgroup350.name,髪アタッチメント,髪追加
