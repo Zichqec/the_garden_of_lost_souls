@@ -1,4 +1,4 @@
-OnAiTalk
+OnAITalk
 {
 	if CHAIN.IDName != ""
 	{
