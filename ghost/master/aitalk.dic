@@ -287,7 +287,7 @@ RandomTalk_LargeStones
 {{CHAIN
 	"\0\s[0]Just through here... \s[6]Don't get ensnared by the vines. \s[9]I don't want to have to pull you free again.\n\n \s[5]... I reserve the right to anticipate your future actions based on your pattern of previous behaviors. \s[9]We've had this conversation before, and I am certain we'll have it many times again..."
 	"\0\s[9]Regardless, here we are... \s[4]Impressive, aren't they?\n\n \s[1]I thought it would be nice to break up the landscape in some fashion. \s[4]Just be careful, they're mainly meant for observation, not climbing."
-	"\0\s[8]... \w8\w8\w8\s[7]Yes, as you've discovered a hundred times before, these rocks are quite slick... \s[9]I really wish you'd retain this detail more frequently."
+	"\0\s[8]... \w8\w8\w8\s[7]Yes, as you've discovered a hundred times before, these rocks are quite slippery... \s[9]I really wish you'd retain this detail more frequently."
 	"\0\s[3]I suppose even if you took a tumble, it wouldn't really hurt you... \s[9]Still, it doesn't help me, either, so I hardly see the point in allowing it.\n\n \s[5]Let's move somewhere else less likely to incite horseplay.\e:chain=end"
 }}CHAIN
 
