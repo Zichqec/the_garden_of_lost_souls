@@ -65,7 +65,7 @@ IntroTalk : nonoverlap_pool
 	elseif !(NeedsRemindedOfGarden || NeedsRemindedOfHerName || NeedsRemindedOfUserName)
 	{
 		"\0\s[101]You remember the path, do you? \s[104]Careful, it has a tendency to bite those who are overconfident. Let me lead the way."
-		"\0\s[1]You seem at home here, %(username). \s[4]It's good to see you relaxed, but let me take the lead, alright?"
+		"\0\s[1]You seem at home here, %(username). \s[4]I'm glad to see you relaxed, but let me take the lead, alright?"
 	}
 	else
 	{
@@ -199,7 +199,7 @@ OnGuessYourName
 	{
 		GuessYourNameWrong
 	}
-	if TodayUserGuess == _answer //Guessing the same thing you put in during the boot sequence
+	elseif TodayUserGuess == _answer //Guessing the same thing you put in during the boot sequence
 	{
 		"\0\s[5]... I have already told you this is not the name I am seeking from you. What benefit is there in reiterating it...? \s[4]Perhaps it will make you happy to know that I did remember it, as I said I would.\n\n \s[9]That being said... \s[1]Your name, the one you first gave to me, is %(username).\e:chain=YourNameEnd"
 	}
