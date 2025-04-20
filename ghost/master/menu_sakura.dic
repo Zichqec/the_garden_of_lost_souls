@@ -25,6 +25,10 @@ OnSakuraMenu : all
 	
 	"\n\n"
 	
+	if FullyOriented //Bug protection...
+	{
+		"(Memories complete.)"
+	}
 	if NeedsRemindedOfGarden
 	{
 		"(Need to remember this place...)"

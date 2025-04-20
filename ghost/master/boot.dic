@@ -458,7 +458,7 @@ OnFirstConvo.YourName
 			--
 			"\0\s[1]Come, walk with me. We can continue our discussion as I guide you.\x"
 		}
-		elseif AnweredCorrect + AnsweredPartial == 2 //Almost all correct
+		elseif AnsweredCorrect + AnsweredPartial == 2 //Almost all correct
 		{
 			if IsFirstBoot
 			{
@@ -471,7 +471,7 @@ OnFirstConvo.YourName
 			--
 			FirstConvo.End
 		}
-		elseif AnweredCorrect + AnsweredPartial == 1
+		elseif AnsweredCorrect + AnsweredPartial == 1
 		{
 			if IsFirstBoot
 			{
