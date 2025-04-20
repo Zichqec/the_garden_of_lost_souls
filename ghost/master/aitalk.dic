@@ -106,7 +106,7 @@ HerNameStart
 HerNameTalk
 {{CHAIN
 	"\0\s[0]I've taken great care to coordinate the colors of the flora I bring into this space. \s[4]It has a pleasing effect, doesn't it? \s[104]The soft glow of the moss brings out the beauty in the pale pastels of the flower petals..."
-	"\0\s[0]It's atypical to see this particular variety of flowers growing together in a wetland such as this. \s[6]But as you're aware, nothing in the garden is ""alive"", so to speak... \s[4]This includes the flowers as well. It is quite the involved process to bring them here and keep them in a life-like state."
+	"\0\s[0]It's atypical to see these particular types of flowers growing together in a wetland such as this. \s[6]But as you're aware, nothing in the garden is ""alive"", so to speak... \s[4]This includes the flowers as well. It is quite the involved process to bring them here and keep them in a life-like state."
 	"\*\t\0\s[1]These flowers in the very center of the garden are my favorite... \s[1]The lavender color suits me, don't you think?\n\n \s[4]As a matter of fact, I'm named after them. Have you remembered?\![open,inputbox,OnGuessHerName,-1]\q[,notimeout]"
 }}CHAIN
 

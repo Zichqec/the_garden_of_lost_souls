@@ -29,7 +29,7 @@ OnSakuraMenu : all
 	{
 		"(Memories complete.)"
 	}
-	if NeedsRemindedOfGarden
+	elseif NeedsRemindedOfGarden
 	{
 		"(Need to remember this place...)"
 	}
