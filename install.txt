@@ -2,4 +2,4 @@ charset,UTF-8
 type,ghost
 
 name,The Garden of Lost Souls
-directory,the_garden_of_lost_souls_zi
+directory,the_garden_of_lost_souls
