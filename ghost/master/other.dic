@@ -99,7 +99,7 @@ On_sakura.recommendsites
 
 recommendsites_sakura : array
 {
-	"Zi's Ukagaka Space";	"https://link.example.com/link/to/whatever/here/"
+	"Zi's Ukagaka Space";	"https://ukagaka.zichqec.com/"
 	"""冷たくて、静かな"" Freeshell";	"https://littlerainy.net/b3/shell/001rim.html"
 }
 
@@ -110,8 +110,8 @@ On_sakura.portalsites
 
 portalsites_sakura : array
 {
-	"Ghost Masquerade 7";	"TODO LINK"
-	"Event afterword";	"TODO LINK"
+	"Ghost Masquerade 7";	"https://earlduant.blog.fc2.com/blog-entry-918.html"
+	"Event afterword";	"https://earlduant.blog.fc2.com/blog-entry-923.html"
 }
 
 username
