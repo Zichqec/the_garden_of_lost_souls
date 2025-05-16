@@ -541,7 +541,7 @@ OnFirstConvo.YourName
 		{
 			if IsFirstBoot
 			{
-				"\0\s[3]Hm. Only partial memories, then. That's unfortunate, but not entirely unexpected. \s[1]Worry not, we'll work on restoring that memory together\x"
+				"\0\s[3]Hm. Only partial memories, then. That's unfortunate, but not entirely unexpected. \s[1]Worry not, we'll work on restoring that memory together.\x"
 			}
 			else
 			{
